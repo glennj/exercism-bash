@@ -39,6 +39,8 @@ cd /path/to/your/exercise_workspace/bash/whatever
 bats whatever.bats
 ```
 
+If you want to print debug output while running the tests locally, see [Debugging Locally](/docs/tracks/bash/debugging).
+
 ## Installing `bats-core`
 
 You should be able to install it from your favorite package manager:
@@ -56,8 +58,8 @@ $ brew install bats-core
 🍺  /usr/local/Cellar/bats-core/1.1.0: 13 files, 55KB, built in 4 seconds
 ```
 
-* The legacy `bats` package also exists in the homebrew ecosystem.
-    **_Do not install that by mistake_**: <u>install `bats-core`</u>.
+- The legacy `bats` package also exists in the homebrew ecosystem.
+  **_Do not install that by mistake_**: <u>install `bats-core`</u>.
 
 ### For Linux
 
@@ -124,7 +126,7 @@ annotations prepending other tests.
 
 ### Overriding skips
 
-To run all tests, including the ones with `skip` annotations, you can set an environment variable `BATS_RUN_SKIPPED` to the value `true`. 
+To run all tests, including the ones with `skip` annotations, you can set an environment variable `BATS_RUN_SKIPPED` to the value `true`.
 One way to set this just for the duration of running bats is:
 
 ```bash
@@ -152,7 +154,6 @@ The `sstephenson/bats` project was quite buggy and had been abandoned.
 Ownership was handed over in 2017: [sstephenson/bats#150 (comment)][bats-fork].
 
 If you have the original sstephenson/bats installed (check with `bats -v` reporting a version number less than 1.0), then you should switch to bats-core; otherwise you may find yourself [experiencing unexplained test failures][legacy-failures].
-
 
 [exercism-cli]: https://exercism.org/docs/using/solving-exercises/working-locally
 [bats]: https://github.com/bats-core/bats-core

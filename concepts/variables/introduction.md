@@ -1,7 +1,5 @@
 # Introduction to Variables
 
-## Variables
-
 _Variables_ are a place to hold data.
 You assign a variable like this
 

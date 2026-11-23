@@ -63,8 +63,18 @@ Do not modify it.
 ### `.docs/introduction.md` — concept intro for this exercise
 
 - Introduces the concept(s) the exercise teaches, as the student will see it alongside the exercise.
-- Derive it from `concepts/<slug>/introduction.md`, but condense: cover only what the tasks require.
-  It is fine to copy sections verbatim.
+- Do not write it by hand.
+  Create `.docs/introduction.md.tpl` containing `# Introduction` and `%{concept:<concept-slug>}`, then generate the file:
+
+  ```bash
+  bin/configlet generate -e <slug> -u -y
+  ```
+
+- The content comes from `concepts/<slug>/introduction.md`, which must cover **only what the exercise teaches**.
+  Trim that file so that every section maps to a learning objective in `.meta/design.md`, and nothing listed under "Out of scope" appears, including in examples (for example, no pipelines in a variables example).
+- Nothing is lost by trimming: `concepts/<slug>/about.md` is the complete reference.
+  Before deleting material from the introduction, check that `about.md` contains it, and move it there if not.
+- Exercise-only material that does not belong on the public concept page (for example, a stopgap such as `expr` before arithmetic has been taught) goes in the `.tpl` after the `%{concept:...}` line.
 
 ### `.docs/instructions.md` — story and tasks
 
@@ -171,6 +181,8 @@ Run these in order and report the results honestly:
    For each learning objective in `.meta/design.md`, name the file(s) that address it (introduction, instructions task, hints, stub, or tests).
    Confirm no task requires knowledge listed under "Out of scope".
    Resolve any objective that is neither taught nor exercised before proceeding.
+   Also check the reverse: every section of the introduction must serve an objective.
+   Trim any section that does not.
 
 2. **Exercise tests against the exemplar:**
 
@@ -203,14 +215,17 @@ Run these in order and report the results honestly:
 
    If `bin/configlet` does not exist, run `bin/fetch-configlet` first.
    If configlet cannot be fetched or run, say so — never claim it passed.
+   Lint fails if the generated `.docs/introduction.md` is missing.
 
-5. **Review the diff:** `git status` and `git diff` — changes should be limited to the new exercise directory and the `exercises.concept` / `status` entries in `config.json`.
+5. **Review the diff:** `git status` and `git diff` — changes should be limited to the new exercise directory, the trimmed `concepts/<slug>/introduction.md`, and the `exercises.concept` / `status` entries in `config.json`.
 
 ## Gotchas
 
 - Bats `run` merges stdout and stderr into `$output`: exemplar code must not print diagnostics.
   While debugging tests, write to fd 3 (`printf '...\n' >&3`) and remove it before finishing.
 - Concept exercises have no skip directives and no `tests.toml`/`template.j2`.
+- `.docs/introduction.md` is generated.
+  After editing `concepts/<slug>/introduction.md` or `.docs/introduction.md.tpl`, run `bin/configlet generate -e <slug> -u -y` again.
 - Keep LF line endings everywhere.
 - The stub must remain a stub — do not let exemplar code leak into it.
 - If debugging output is added to track tooling (scripts under `bin/`), write it to stderr and remove it before finishing.

@@ -232,6 +232,6 @@ Run these in order and report the results honestly:
 
 ## Follow-ups (mention these to the user; do only if asked)
 
-- Update `docs/SYLLABUS.md` to link the new exercise.
+- Do not suggest updating `docs/SYLLABUS.md` to link the new exercise.
 - If the story is novel (not forked from another track), the exercise needs an icon: open an issue in the exercism/website-icons repository.
 - When the exercise (and enough of the syllabus) is ready for students, change its status from `wip` to `beta` and set top-level `status.concept_exercises` to `true`.

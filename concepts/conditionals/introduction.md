@@ -20,24 +20,22 @@ This applies to all commands, including bash builtin commands, keywords, and fun
 The basic syntax of the `if` command is
 
 ```bash
-if CONDITIONAL_COMMANDS; then TRUE_COMMANDS; else FALSE_COMMANDS; fi
+if CONDITIONAL_COMMAND; then TRUE_COMMANDS; else FALSE_COMMANDS; fi
 ```
 
-It starts with `if`; the condition commands are separated from the "success" commands by `then`; and it is terminated with `fi`.
+It starts with `if`; the condition command is separated from the "success" commands by `then`; and it is terminated with `fi`.
 The `else` clause is optional.
 
-CONDITIONAL_COMMANDS can be a single command or it can be a [list of commands][command-list].
-
-The CONDITIONAL_COMMANDS are executed, and
+The CONDITIONAL_COMMAND is executed, and
 
 * if the exit status is zero (success), then the TRUE_COMMANDS are executed.
 * if the exit status is non-zero (failure), then the FALSE_COMMANDS are executed, if they are present.
 
 Cascading branches can be given with `elif`
 ```bash
-if CONDITIONAL_COMMANDS
+if CONDITIONAL_COMMAND
 then TRUE_COMMANDS
-elif CONDITIONAL_COMMANDS_2
+elif CONDITIONAL_COMMAND_2
 then TRUE_COMMANDS_2
 # more elif branches ...
 else FALSE_COMMANDS
@@ -46,7 +44,7 @@ fi
 
 There must be a semicolon or a newline before the `then`, `elif`, `else` and `fi` words.
 
-To emphasize: it is the **exit status** of the conditional commands that controls the flow.
+To emphasize: it is the **exit status** of the conditional command that controls the flow.
 As an example, `grep` returns 0 if a match is found, and 1 if a match is not found.
 The `-q` option suppresses output, only producing the exit status.
 
@@ -56,7 +54,7 @@ if grep -q "my pattern" my_file; then echo "the pattern is found in the file"; f
 
 ## "[" and "test" Commands
 
-There is no special syntax around the CONDITIONAL_COMMANDS.
+There is no special syntax around the CONDITIONAL_COMMAND.
 You may be used to seeing if statements that look like this:
 
 ```if
@@ -83,39 +81,28 @@ Some typical conditional expressions include:
 [ "$num1" -eq "$num2" ]        # arithmetic comparisons
 ```
 
+The arithmetic comparison operators treat their operands as integers:
+
+| Operator | True when the first number is |
+| -------- | ----------------------------- |
+| `-eq`    | equal to the second           |
+| `-ne`    | not equal to the second       |
+| `-lt`    | less than the second          |
+| `-le`    | less than or equal to         |
+| `-gt`    | greater than the second       |
+| `-ge`    | greater than or equal to      |
+
 There are many more operations available; they are listed in the [Bash Conditional Expressions][cond-expr] section of the manual.
 
-~~~~exercism/note
-In the examples above, notice that all the variables are quoted.
-The `test` and `[` commands are plain commands, where the arguments are subject to word splitting and filename expansion like any other command.
-
-This is important to point out because conditional expressions are evaluated differently based on _how many arguments_ you provide:
-
-* 0 arguments: the exit status is non-zero (failure)
-* 1 argument: the exit status is zero (success) if the argument is not empty, non-zero if it is empty.
-* 2 arguments: the first argument must be a unary operator (such as `[ -z "$name" ]`), or a `!` (negating the status of the 1-argument test)
-* and [more][test].
-
-You can get unexpected results if you forget to quote:
-
-```bash
-str=""
-
-# this prints "empty"
-if [ -n "$str" ]; then echo "not empty"; else echo "empty"; fi
-
-# leaving the variable unquoted results in incorrect "not empty" output
-if [ -n $str ]; then echo "not empty"; else echo "empty"; fi
-```
-
-[test]: https://www.gnu.org/software/bash/manual/bash.html#index-test
-~~~~
+Notice that all the variables above are quoted.
+`test` and `[` are plain commands, so their arguments are subject to word splitting and filename expansion like any other command.
+Remember to quote your variable expansions.
 
 ## "[[" Keyword
 
 The [`[[...]]` conditional construct][cond-construct] is not a _command_, it is a **keyword**.
 This means that, although it is handled like any other command, it has special parsing rules.
-What's special about `[[` is that the variables expanded within it are **not** subject to word splitting or filename expansion.
+What's special about `[[` is that the variables expanded within it are not subject to _word splitting_ or _filename expansion_.
 That means this command acts as you expect, even without quoting.
 
 ```bash
@@ -130,45 +117,11 @@ In addition, `[[` provides
 * `&&` and `||` as logical operators (special parsing rule),
 * `<` and `>` as "bare" string comparison operators (special parsing rule: because these are redirection symbols, in `[` they must be escaped).
 
+Do not use `<` and `>` to compare numbers.
+They compare strings character by character, so `[[ 10 < 9 ]]` is true: "1" sorts before "9".
+Use `-lt` and `-gt` for numbers.
+
 It is widely held that these special features offer so much benefit that `[[` should be used exclusively.
 (For example, the [Google Shell Style Guide][goog-test].)
 
-## The "case" Command
-
-[`case`][case] is another control flow command.
-It is like a "switch" statement in other languages.
-
-```bash
-case WORD in [PATTERN [| PATTERN]...) COMMANDS ;;]... esac
-```
-
-The WORD is matched against each PATTERN.
-When one matches, the COMMANDS are executed.
-
-```bash
-read -p "Guess the secret word: " word
-case "$word" in
-    secret) echo "Yes, you guessed it!" ;;
-    ??????) echo "That's the right number of letters." ;;
-    s*)     echo "You guessed the first letter." ;;
-    *)      echo "Not even close! Try again." ;;
-esac
-```
-
-Each COMMANDS clause must end with **two** semicolons, `;;`.
-
-~~~~exercism/note
-1. There are alternatives that provide functionality for fall-through command execution, and for pattern matching to continue.
-   Check [the manual][case] for details.
-2. Recall that we talked about patterns in the [Filename Expansion][glob] section of the Quoting concept.
-
-[case]: https://www.gnu.org/software/bash/manual/bash.html#index-case
-[glob]: https://exercism.org/tracks/bash/concepts/quoting#h-filename-expansion
-~~~~
-
-[command-list]: https://www.gnu.org/software/bash/manual/bash.html#Lists
-[if]: https://www.gnu.org/software/bash/manual/bash.html#index-if
-[case]: https://www.gnu.org/software/bash/manual/bash.html#index-case
-[cond-expr]: https://www.gnu.org/software/bash/manual/bash.html#Bash-Conditional-Expressions
-[cond-construct]: https://www.gnu.org/software/bash/manual/bash.html#index-_005b_005b
 [goog-test]: https://google.github.io/styleguide/shellguide.html#s6.3-tests

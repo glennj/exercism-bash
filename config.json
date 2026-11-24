@@ -67,6 +67,18 @@
           "variables"
         ],
         "status": "wip"
+      },
+      {
+        "slug": "vehicle-purchase",
+        "name": "Vehicle Purchase",
+        "uuid": "d75f0220-d4ab-4138-881e-0b1d7a71c813",
+        "concepts": [
+          "conditionals"
+        ],
+        "prerequisites": [
+          "quoting"
+        ],
+        "status": "wip"
       }
     ],
     "practice": [

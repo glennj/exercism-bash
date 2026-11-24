@@ -1,0 +1,20 @@
+{
+  "authors": [
+    "glennj"
+  ],
+  "files": {
+    "solution": [
+      "messy_downloads.sh"
+    ],
+    "test": [
+      "messy_downloads.bats"
+    ],
+    "exemplar": [
+      ".meta/exemplar.sh"
+    ],
+    "invalidator": [
+      "bats-extra.bash"
+    ]
+  },
+  "blurb": "Learn about quoting by tidying up a downloads folder full of awkwardly named files."
+}

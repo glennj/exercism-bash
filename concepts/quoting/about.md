@@ -169,6 +169,19 @@ The glob wildcard characters are:
    </details>   
    ~~~~
 
+#### Filename Expansion Is Done by the Shell
+
+You have probably used globs with `ls`:
+
+```bash
+ls *.md
+```
+
+Filename expansion is a feature of the _shell_, not of the `ls` program.
+Before it runs `ls`, bash replaces the pattern with the names of the matching files.
+If the directory contains `a.md` and `b.md`, then `ls` is run as `ls a.md b.md`: it never sees the `*`.
+Every command gets the same treatment, which is why `echo *.md` prints the file names too.
+
 #### Iterating Over a List of Files
 
 You can iterate over a list of files with a `for` loop

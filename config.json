@@ -55,6 +55,18 @@
           "commands-and-arguments"
         ],
         "status": "wip"
+      },
+      {
+        "slug": "messy-downloads",
+        "name": "Messy Downloads",
+        "uuid": "65f92a90-3b28-4498-b9ad-5649acc484f3",
+        "concepts": [
+          "quoting"
+        ],
+        "prerequisites": [
+          "variables"
+        ],
+        "status": "wip"
       }
     ],
     "practice": [

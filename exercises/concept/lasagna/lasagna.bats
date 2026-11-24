@@ -73,6 +73,7 @@ test_total_time_with_defaults() { # @test
     assert_line --index 3 "Total time in minutes: 2"
 }
 
+# bats test_tags=task:4
 test_exact_output() { # @test
     run bash lasagna.sh 10 2
 

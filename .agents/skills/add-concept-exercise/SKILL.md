@@ -225,7 +225,10 @@ Run these in order and report the results honestly:
   While debugging tests, write to fd 3 (`printf '...\n' >&3`) and remove it before finishing.
 - Concept exercises have no skip directives and no `tests.toml`/`template.j2`.
 - `.docs/introduction.md` is generated.
-  After editing `concepts/<slug>/introduction.md` or `.docs/introduction.md.tpl`, run `bin/configlet generate -e <slug> -u -y` again.
+  Never edit it by hand.
+  Whenever `concepts/<concept>/introduction.md` is updated, find every exercise whose `.docs/introduction.md.tpl` exists and references that concept (`grep -l '%{concept:<concept>}' exercises/concept/*/.docs/introduction.md.tpl`), and run `bin/configlet generate -e <exercise> -u -y` for each one.
+  Do the same after editing an exercise's `.docs/introduction.md.tpl`.
+  Exercises without a template file need no regeneration.
 - Keep LF line endings everywhere.
 - The stub must remain a stub — do not let exemplar code leak into it.
 - If debugging output is added to track tooling (scripts under `bin/`), write it to stderr and remove it before finishing.
